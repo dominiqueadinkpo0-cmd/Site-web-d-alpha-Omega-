@@ -3,13 +3,19 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Alpha Oméga Digital API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: projects
+    description: Project requests and CRM
+  - name: appointments
+    description: Appointment scheduling
+  - name: contacts
+    description: Contact messages
 paths:
   /healthz:
     get:
@@ -24,6 +30,151 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /projects:
+    get:
+      operationId: listProjects
+      tags: [projects]
+      summary: List all project requests
+      responses:
+        "200":
+          description: List of project requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+    post:
+      operationId: createProject
+      tags: [projects]
+      summary: Submit a new project request (questionnaire)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectInput"
+      responses:
+        "201":
+          description: Project request created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "400":
+          description: Validation error
+
+  /projects/{id}:
+    get:
+      operationId: getProject
+      tags: [projects]
+      summary: Get a project request by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Project details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          description: Not found
+
+  /projects/{id}/estimation:
+    get:
+      operationId: getProjectEstimation
+      tags: [projects]
+      summary: Get automatic budget estimation for a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Estimation details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Estimation"
+        "404":
+          description: Not found
+
+  /appointments:
+    get:
+      operationId: listAppointments
+      tags: [appointments]
+      summary: List all appointments
+      responses:
+        "200":
+          description: List of appointments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Appointment"
+    post:
+      operationId: createAppointment
+      tags: [appointments]
+      summary: Book a new appointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentInput"
+      responses:
+        "201":
+          description: Appointment booked
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Appointment"
+        "400":
+          description: Validation error
+
+  /contacts:
+    post:
+      operationId: createContact
+      tags: [contacts]
+      summary: Submit a contact message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactInput"
+      responses:
+        "201":
+          description: Contact message received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Contact"
+        "400":
+          description: Validation error
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [projects]
+      summary: Get public statistics (hours, projects, etc.)
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +185,223 @@ components:
       required:
         - status
 
+    Project:
+      type: object
+      required:
+        - id
+        - projectNumber
+        - status
+        - createdAt
+      properties:
+        id:
+          type: integer
+        projectNumber:
+          type: string
+        status:
+          type: string
+          enum: [new, contacted, in_progress, closed]
+        companyName:
+          type: ["string", "null"]
+        contactName:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        phone:
+          type: ["string", "null"]
+        projectType:
+          type: ["string", "null"]
+        objectives:
+          type: ["string", "null"]
+        budget:
+          type: ["string", "null"]
+        deadline:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        answers:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    ProjectInput:
+      type: object
+      required:
+        - email
+      properties:
+        companyName:
+          type: string
+        contactName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        projectType:
+          type: string
+        objectives:
+          type: string
+        budget:
+          type: string
+        deadline:
+          type: string
+        description:
+          type: string
+        answers:
+          type: string
+
+    Estimation:
+      type: object
+      required:
+        - low
+        - medium
+        - premium
+        - complexity
+        - estimatedWeeks
+        - recommendedTechnologies
+        - priorityFeatures
+        - recommendations
+      properties:
+        low:
+          type: integer
+        medium:
+          type: integer
+        premium:
+          type: integer
+        complexity:
+          type: string
+          enum: [simple, moderate, complex, enterprise]
+        estimatedWeeks:
+          type: integer
+        monthlyMaintenance:
+          type: integer
+        hostingMonthly:
+          type: integer
+        recommendedTechnologies:
+          type: array
+          items:
+            type: string
+        priorityFeatures:
+          type: array
+          items:
+            type: string
+        recommendations:
+          type: string
+
+    Appointment:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - date
+        - time
+        - type
+        - status
+        - createdAt
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: ["string", "null"]
+        date:
+          type: string
+        time:
+          type: string
+        type:
+          type: string
+          enum: [visio, phone, in_person]
+        status:
+          type: string
+          enum: [pending, confirmed, cancelled]
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    AppointmentInput:
+      type: object
+      required:
+        - name
+        - email
+        - date
+        - time
+        - type
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        date:
+          type: string
+        time:
+          type: string
+        type:
+          type: string
+          enum: [visio, phone, in_person]
+        notes:
+          type: string
+
+    Contact:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - message
+        - createdAt
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: ["string", "null"]
+        subject:
+          type: ["string", "null"]
+        message:
+          type: string
+        createdAt:
+          type: string
+
+    ContactInput:
+      type: object
+      required:
+        - name
+        - email
+        - message
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        subject:
+          type: string
+        message:
+          type: string
+
+    Stats:
+      type: object
+      required:
+        - totalProjects
+        - totalHours
+        - responseTime
+        - satisfactionRate
+      properties:
+        totalProjects:
+          type: integer
+        totalHours:
+          type: integer
+        responseTime:
+          type: string
+        satisfactionRate:
+          type: integer
