@@ -12,6 +12,7 @@ export const projectStatusEnum = pgEnum("project_status", [
 export const projectsTable = pgTable("projects", {
   id: serial("id").primaryKey(),
   projectNumber: text("project_number").notNull().unique(),
+  trackingToken: text("tracking_token").notNull().unique(),
   status: projectStatusEnum("status").notNull().default("new"),
   companyName: text("company_name"),
   contactName: text("contact_name"),

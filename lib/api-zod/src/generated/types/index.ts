@@ -19,4 +19,5 @@ export * from './healthStatus';
 export * from './project';
 export * from './projectInput';
 export * from './projectStatus';
+export * from './projectTracking';
 export * from './stats';

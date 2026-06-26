@@ -28,6 +28,7 @@ import type {
   HealthStatus,
   Project,
   ProjectInput,
+  ProjectTracking,
   Stats
 } from './api.schemas';
 
@@ -348,6 +349,83 @@ export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TE
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetProjectQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetProjectByTokenUrl = (token: string,) => {
+
+
+
+
+  return `/api/projects/track/${token}`
+}
+
+/**
+ * @summary Get a project by its unique tracking token (for clients)
+ */
+export const getProjectByToken = async (token: string, options?: RequestInit): Promise<ProjectTracking> => {
+
+  return customFetch<ProjectTracking>(getGetProjectByTokenUrl(token),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetProjectByTokenQueryKey = (token: string,) => {
+    return [
+    `/api/projects/track/${token}`
+    ] as const;
+    }
+
+
+export const getGetProjectByTokenQueryOptions = <TData = Awaited<ReturnType<typeof getProjectByToken>>, TError = ErrorType<void>>(token: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProjectByToken>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetProjectByTokenQueryKey(token);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getProjectByToken>>> = ({ signal }) => getProjectByToken(token, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: token !== null && token !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getProjectByToken>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetProjectByTokenQueryResult = NonNullable<Awaited<ReturnType<typeof getProjectByToken>>>
+export type GetProjectByTokenQueryError = ErrorType<void>
+
+
+/**
+ * @summary Get a project by its unique tracking token (for clients)
+ */
+
+export function useGetProjectByToken<TData = Awaited<ReturnType<typeof getProjectByToken>>, TError = ErrorType<void>>(
+ token: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getProjectByToken>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetProjectByTokenQueryOptions(token,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

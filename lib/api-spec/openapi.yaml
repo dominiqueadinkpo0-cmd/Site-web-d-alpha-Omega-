@@ -86,6 +86,27 @@ paths:
         "404":
           description: Not found
 
+  /projects/track/{token}:
+    get:
+      operationId: getProjectByToken
+      tags: [projects]
+      summary: Get a project by its unique tracking token (for clients)
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Project tracking details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectTracking"
+        "404":
+          description: Not found
+
   /projects/{id}/estimation:
     get:
       operationId: getProjectEstimation
@@ -190,12 +211,15 @@ components:
       required:
         - id
         - projectNumber
+        - trackingToken
         - status
         - createdAt
       properties:
         id:
           type: integer
         projectNumber:
+          type: string
+        trackingToken:
           type: string
         status:
           type: string
@@ -248,6 +272,17 @@ components:
           type: string
         answers:
           type: string
+
+    ProjectTracking:
+      type: object
+      required:
+        - project
+        - estimation
+      properties:
+        project:
+          $ref: "#/components/schemas/Project"
+        estimation:
+          $ref: "#/components/schemas/Estimation"
 
     Estimation:
       type: object

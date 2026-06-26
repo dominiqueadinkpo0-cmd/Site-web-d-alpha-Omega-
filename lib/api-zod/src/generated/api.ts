@@ -23,6 +23,7 @@ export const HealthCheckResponse = zod.object({
 export const ListProjectsResponseItem = zod.object({
   "id": zod.number(),
   "projectNumber": zod.string(),
+  "trackingToken": zod.string(),
   "status": zod.enum(['new', 'contacted', 'in_progress', 'closed']),
   "companyName": zod.string().nullish(),
   "contactName": zod.string().nullish(),
@@ -58,6 +59,7 @@ export const CreateProjectBody = zod.object({
 export const CreateProjectResponse = zod.object({
   "id": zod.number(),
   "projectNumber": zod.string(),
+  "trackingToken": zod.string(),
   "status": zod.enum(['new', 'contacted', 'in_progress', 'closed']),
   "companyName": zod.string().nullish(),
   "contactName": zod.string().nullish(),
@@ -83,6 +85,7 @@ export const GetProjectParams = zod.object({
 export const GetProjectResponse = zod.object({
   "id": zod.number(),
   "projectNumber": zod.string(),
+  "trackingToken": zod.string(),
   "status": zod.enum(['new', 'contacted', 'in_progress', 'closed']),
   "companyName": zod.string().nullish(),
   "contactName": zod.string().nullish(),
@@ -95,6 +98,46 @@ export const GetProjectResponse = zod.object({
   "description": zod.string().nullish(),
   "answers": zod.string().nullish(),
   "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Get a project by its unique tracking token (for clients)
+ */
+export const GetProjectByTokenParams = zod.object({
+  "token": zod.coerce.string()
+})
+
+export const GetProjectByTokenResponse = zod.object({
+  "project": zod.object({
+  "id": zod.number(),
+  "projectNumber": zod.string(),
+  "trackingToken": zod.string(),
+  "status": zod.enum(['new', 'contacted', 'in_progress', 'closed']),
+  "companyName": zod.string().nullish(),
+  "contactName": zod.string().nullish(),
+  "email": zod.string().nullish(),
+  "phone": zod.string().nullish(),
+  "projectType": zod.string().nullish(),
+  "objectives": zod.string().nullish(),
+  "budget": zod.string().nullish(),
+  "deadline": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "answers": zod.string().nullish(),
+  "createdAt": zod.string()
+}),
+  "estimation": zod.object({
+  "low": zod.number(),
+  "medium": zod.number(),
+  "premium": zod.number(),
+  "complexity": zod.enum(['simple', 'moderate', 'complex', 'enterprise']),
+  "estimatedWeeks": zod.number(),
+  "monthlyMaintenance": zod.number().optional(),
+  "hostingMonthly": zod.number().optional(),
+  "recommendedTechnologies": zod.array(zod.string()),
+  "priorityFeatures": zod.array(zod.string()),
+  "recommendations": zod.string()
+})
 })
 
 

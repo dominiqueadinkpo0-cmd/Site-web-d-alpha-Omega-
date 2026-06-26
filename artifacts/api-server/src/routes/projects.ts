@@ -1,5 +1,6 @@
 import { Router, type IRouter } from "express";
 import { eq } from "drizzle-orm";
+import { randomBytes } from "crypto";
 import { db, projectsTable } from "@workspace/db";
 import {
   CreateProjectBody,
@@ -13,6 +14,10 @@ function generateProjectNumber(): string {
   const year = new Date().getFullYear();
   const random = Math.floor(Math.random() * 9000) + 1000;
   return `AOD-${year}-${random}`;
+}
+
+function generateTrackingToken(): string {
+  return randomBytes(16).toString("hex");
 }
 
 function computeEstimation(project: typeof projectsTable.$inferSelect) {
@@ -113,17 +118,42 @@ router.post("/projects", async (req, res): Promise<void> => {
   }
 
   const projectNumber = generateProjectNumber();
+  const trackingToken = generateTrackingToken();
 
   const [project] = await db
     .insert(projectsTable)
     .values({
       ...parsed.data,
       projectNumber,
+      trackingToken,
       status: "new",
     })
     .returning();
 
   res.status(201).json(project);
+});
+
+// Track by token — must come before /:id route to avoid "track" being parsed as an id
+router.get("/projects/track/:token", async (req, res): Promise<void> => {
+  const raw = Array.isArray(req.params.token) ? req.params.token[0] : req.params.token;
+
+  if (!raw || raw.length < 8) {
+    res.status(400).json({ error: "Invalid token" });
+    return;
+  }
+
+  const [project] = await db
+    .select()
+    .from(projectsTable)
+    .where(eq(projectsTable.trackingToken, raw));
+
+  if (!project) {
+    res.status(404).json({ error: "Project not found" });
+    return;
+  }
+
+  const estimation = computeEstimation(project);
+  res.json({ project, estimation });
 });
 
 router.get("/projects/:id", async (req, res): Promise<void> => {

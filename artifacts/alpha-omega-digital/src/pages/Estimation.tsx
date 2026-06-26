@@ -1,17 +1,19 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { useSearch } from "wouter";
-import { useGetProjectEstimation, getGetProjectEstimationQueryKey } from "@workspace/api-client-react";
+import { useGetProjectEstimation, getGetProjectEstimationQueryKey, useGetProject, getGetProjectQueryKey } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Check, ArrowRight, Loader2, Calendar, HardDrive, Shield, Sparkles } from "lucide-react";
+import { Check, ArrowRight, Loader2, Calendar, HardDrive, Shield, Sparkles, Copy, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 export default function Estimation() {
   const search = useSearch();
   const searchParams = new URLSearchParams(search);
   const idParam = searchParams.get("id");
   const id = idParam ? parseInt(idParam, 10) : null;
+  const [copied, setCopied] = useState(false);
 
   const { data: estimation, isLoading, error } = useGetProjectEstimation(id || 0, {
     query: {
@@ -19,6 +21,25 @@ export default function Estimation() {
       queryKey: getGetProjectEstimationQueryKey(id || 0)
     }
   });
+
+  const { data: project } = useGetProject(id || 0, {
+    query: {
+      enabled: !!id,
+      queryKey: getGetProjectQueryKey(id || 0)
+    }
+  });
+
+  const trackingUrl = project?.trackingToken
+    ? `${window.location.origin}/suivi/${project.trackingToken}`
+    : null;
+
+  function copyTrackingLink() {
+    if (!trackingUrl) return;
+    navigator.clipboard.writeText(trackingUrl).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    });
+  }
 
   const formatCurrency = (val: number) => {
     return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(val);
@@ -62,6 +83,41 @@ export default function Estimation() {
               Basée sur vos réponses, voici 3 approches pour réaliser votre vision numérique avec l'exigence de qualité Alpha Oméga Digital®.
             </p>
           </div>
+
+          {/* Tracking link banner */}
+          {trackingUrl && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="max-w-2xl mx-auto mb-10 bg-white border border-border rounded-2xl p-5 flex flex-col sm:flex-row items-center gap-4"
+            >
+              <div className="flex-grow min-w-0">
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">Votre lien de suivi personnel</p>
+                <p className="text-sm text-foreground font-mono truncate">{trackingUrl}</p>
+              </div>
+              <div className="flex gap-2 flex-shrink-0">
+                <button
+                  onClick={copyTrackingLink}
+                  data-testid="button-copy-tracking-link"
+                  className="inline-flex items-center gap-1.5 text-xs font-medium px-4 py-2 rounded-full border border-border bg-gray-50 hover:bg-gray-100 transition-colors"
+                >
+                  <Copy className="w-3.5 h-3.5" />
+                  {copied ? "Copié !" : "Copier"}
+                </button>
+                <a
+                  href={trackingUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-testid="link-open-tracking"
+                  className="inline-flex items-center gap-1.5 text-xs font-medium px-4 py-2 rounded-full bg-foreground text-white hover:bg-foreground/90 transition-colors"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  Voir mon dossier
+                </a>
+              </div>
+            </motion.div>
+          )}
 
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-20">

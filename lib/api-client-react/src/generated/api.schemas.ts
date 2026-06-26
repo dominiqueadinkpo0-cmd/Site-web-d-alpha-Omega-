@@ -22,6 +22,7 @@ export const ProjectStatus = {
 export interface Project {
   id: number;
   projectNumber: string;
+  trackingToken: string;
   status: ProjectStatus;
   /** @nullable */
   companyName?: string | null;
@@ -80,6 +81,11 @@ export interface Estimation {
   recommendedTechnologies: string[];
   priorityFeatures: string[];
   recommendations: string;
+}
+
+export interface ProjectTracking {
+  project: Project;
+  estimation: Estimation;
 }
 
 export type AppointmentType = typeof AppointmentType[keyof typeof AppointmentType];

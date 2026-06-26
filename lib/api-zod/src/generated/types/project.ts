@@ -10,6 +10,7 @@ import type { ProjectStatus } from './projectStatus';
 export interface Project {
   id: number;
   projectNumber: string;
+  trackingToken: string;
   status: ProjectStatus;
   /** @nullable */
   companyName?: string | null;
