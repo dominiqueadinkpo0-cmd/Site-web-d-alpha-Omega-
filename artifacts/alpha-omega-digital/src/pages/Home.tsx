@@ -24,18 +24,18 @@ export default function Home() {
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden relative">
-          <div className="absolute inset-0 z-0 opacity-30 pointer-events-none">
-            <motion.div
-              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3], x: [0, 50, 0] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[100px]"
-            />
-            <motion.div
-              animate={{ scale: [1, 1.5, 1], opacity: [0.2, 0.4, 0.2], x: [0, -50, 0] }}
-              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-              className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-green-200 rounded-full blur-[120px]"
-            />
-          </div>
+          {/* Background image */}
+          <div
+            className="absolute inset-0 z-0"
+            style={{
+              backgroundImage: "url('/hero-bg.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center top",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
+          {/* Subtle overlay to keep text legible */}
+          <div className="absolute inset-0 z-0 bg-white/55" />
 
           <div className="container mx-auto px-6 max-w-7xl relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
