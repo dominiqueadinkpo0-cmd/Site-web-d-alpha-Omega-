@@ -29,7 +29,8 @@ import type {
   Project,
   ProjectInput,
   ProjectTracking,
-  Stats
+  Stats,
+  UpdateProjectStatusInput
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -361,6 +362,77 @@ export function useGetProject<TData = Awaited<ReturnType<typeof getProject>>, TE
 
 
 
+export const getUpdateProjectStatusUrl = (id: number,) => {
+
+
+
+
+  return `/api/projects/${id}`
+}
+
+/**
+ * @summary Update project status (admin)
+ */
+export const updateProjectStatus = async (id: number,
+    updateProjectStatusInput: UpdateProjectStatusInput, options?: RequestInit): Promise<Project> => {
+
+  return customFetch<Project>(getUpdateProjectStatusUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(updateProjectStatusInput)
+  }
+);}
+
+
+
+
+export const getUpdateProjectStatusMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateProjectStatus>>, TError,{id: number;data: BodyType<UpdateProjectStatusInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateProjectStatus>>, TError,{id: number;data: BodyType<UpdateProjectStatusInput>}, TContext> => {
+
+const mutationKey = ['updateProjectStatus'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateProjectStatus>>, {id: number;data: BodyType<UpdateProjectStatusInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateProjectStatus(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateProjectStatusMutationResult = NonNullable<Awaited<ReturnType<typeof updateProjectStatus>>>
+    export type UpdateProjectStatusMutationBody = BodyType<UpdateProjectStatusInput>
+    export type UpdateProjectStatusMutationError = ErrorType<void>
+
+    /**
+ * @summary Update project status (admin)
+ */
+export const useUpdateProjectStatus = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateProjectStatus>>, TError,{id: number;data: BodyType<UpdateProjectStatusInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateProjectStatus>>,
+        TError,
+        {id: number;data: BodyType<UpdateProjectStatusInput>},
+        TContext
+      > => {
+      return useMutation(getUpdateProjectStatusMutationOptions(options));
+    }
+
 export const getGetProjectByTokenUrl = (token: string,) => {
 
 
@@ -661,6 +733,83 @@ export const useCreateAppointment = <TError = ErrorType<void>,
       > => {
       return useMutation(getCreateAppointmentMutationOptions(options));
     }
+
+export const getListContactsUrl = () => {
+
+
+
+
+  return `/api/contacts`
+}
+
+/**
+ * @summary List all contact messages (admin)
+ */
+export const listContacts = async ( options?: RequestInit): Promise<Contact[]> => {
+
+  return customFetch<Contact[]>(getListContactsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListContactsQueryKey = () => {
+    return [
+    `/api/contacts`
+    ] as const;
+    }
+
+
+export const getListContactsQueryOptions = <TData = Awaited<ReturnType<typeof listContacts>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listContacts>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListContactsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listContacts>>> = ({ signal }) => listContacts({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listContacts>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListContactsQueryResult = NonNullable<Awaited<ReturnType<typeof listContacts>>>
+export type ListContactsQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List all contact messages (admin)
+ */
+
+export function useListContacts<TData = Awaited<ReturnType<typeof listContacts>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listContacts>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListContactsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
 
 export const getCreateContactUrl = () => {
 

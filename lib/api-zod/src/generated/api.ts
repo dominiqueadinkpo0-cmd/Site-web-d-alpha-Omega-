@@ -102,6 +102,36 @@ export const GetProjectResponse = zod.object({
 
 
 /**
+ * @summary Update project status (admin)
+ */
+export const UpdateProjectStatusParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateProjectStatusBody = zod.object({
+  "status": zod.enum(['new', 'contacted', 'in_progress', 'closed'])
+})
+
+export const UpdateProjectStatusResponse = zod.object({
+  "id": zod.number(),
+  "projectNumber": zod.string(),
+  "trackingToken": zod.string(),
+  "status": zod.enum(['new', 'contacted', 'in_progress', 'closed']),
+  "companyName": zod.string().nullish(),
+  "contactName": zod.string().nullish(),
+  "email": zod.string().nullish(),
+  "phone": zod.string().nullish(),
+  "projectType": zod.string().nullish(),
+  "objectives": zod.string().nullish(),
+  "budget": zod.string().nullish(),
+  "deadline": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "answers": zod.string().nullish(),
+  "createdAt": zod.string()
+})
+
+
+/**
  * @summary Get a project by its unique tracking token (for clients)
  */
 export const GetProjectByTokenParams = zod.object({
@@ -205,6 +235,21 @@ export const CreateAppointmentResponse = zod.object({
   "notes": zod.string().nullish(),
   "createdAt": zod.string()
 })
+
+
+/**
+ * @summary List all contact messages (admin)
+ */
+export const ListContactsResponseItem = zod.object({
+  "id": zod.number(),
+  "name": zod.string(),
+  "email": zod.string(),
+  "phone": zod.string().nullish(),
+  "subject": zod.string().nullish(),
+  "message": zod.string(),
+  "createdAt": zod.string()
+})
+export const ListContactsResponse = zod.array(ListContactsResponseItem)
 
 
 /**

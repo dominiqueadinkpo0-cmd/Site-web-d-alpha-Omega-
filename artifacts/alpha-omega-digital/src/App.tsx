@@ -4,6 +4,7 @@ import Questionnaire from "@/pages/Questionnaire";
 import Estimation from "@/pages/Estimation";
 import RendezVous from "@/pages/RendezVous";
 import Suivi from "@/pages/Suivi";
+import Admin from "@/pages/Admin";
 import NotFound from "@/pages/not-found";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -19,6 +20,7 @@ function Router() {
       <Route path="/estimation" component={Estimation} />
       <Route path="/rendez-vous" component={RendezVous} />
       <Route path="/suivi/:token" component={Suivi} />
+      <Route path="/admin" component={Admin} />
       <Route component={NotFound} />
     </Switch>
   );

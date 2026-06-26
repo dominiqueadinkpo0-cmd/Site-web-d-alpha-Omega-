@@ -94,7 +94,7 @@ export function Footer() {
               </li>
             </ul>
             <a
-              href="https://wa.me/22901677280"
+              href="https://wa.me/2290167728061"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 inline-block w-full"

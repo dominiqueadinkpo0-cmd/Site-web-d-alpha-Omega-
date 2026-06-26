@@ -21,3 +21,5 @@ export * from './projectInput';
 export * from './projectStatus';
 export * from './projectTracking';
 export * from './stats';
+export * from './updateProjectStatusInput';
+export * from './updateProjectStatusInputStatus';

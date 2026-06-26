@@ -47,6 +47,20 @@ export interface Project {
   createdAt: string;
 }
 
+export type UpdateProjectStatusInputStatus = typeof UpdateProjectStatusInputStatus[keyof typeof UpdateProjectStatusInputStatus];
+
+
+export const UpdateProjectStatusInputStatus = {
+  new: 'new',
+  contacted: 'contacted',
+  in_progress: 'in_progress',
+  closed: 'closed',
+} as const;
+
+export interface UpdateProjectStatusInput {
+  status: UpdateProjectStatusInputStatus;
+}
+
 export interface ProjectInput {
   companyName?: string;
   contactName?: string;

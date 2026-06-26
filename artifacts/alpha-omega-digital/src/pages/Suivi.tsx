@@ -277,7 +277,7 @@ export default function Suivi() {
                     </Button>
                   </Link>
                   <a
-                    href="https://wa.me/22901677280"
+                    href="https://wa.me/2290167728061"
                     target="_blank"
                     rel="noopener noreferrer"
                     data-testid="link-whatsapp-cta"

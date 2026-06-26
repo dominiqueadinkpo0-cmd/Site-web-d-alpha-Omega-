@@ -156,6 +156,35 @@ router.get("/projects/track/:token", async (req, res): Promise<void> => {
   res.json({ project, estimation });
 });
 
+router.patch("/projects/:id", async (req, res): Promise<void> => {
+  const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = parseInt(raw, 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid id" });
+    return;
+  }
+
+  const allowed = ["new", "contacted", "in_progress", "closed"] as const;
+  const status = req.body?.status;
+  if (!allowed.includes(status)) {
+    res.status(400).json({ error: "Invalid status" });
+    return;
+  }
+
+  const [updated] = await db
+    .update(projectsTable)
+    .set({ status })
+    .where(eq(projectsTable.id, id))
+    .returning();
+
+  if (!updated) {
+    res.status(404).json({ error: "Project not found" });
+    return;
+  }
+
+  res.json(updated);
+});
+
 router.get("/projects/:id", async (req, res): Promise<void> => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const params = GetProjectParams.safeParse({ id: raw });

@@ -85,6 +85,31 @@ paths:
                 $ref: "#/components/schemas/Project"
         "404":
           description: Not found
+    patch:
+      operationId: updateProjectStatus
+      tags: [projects]
+      summary: Update project status (admin)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProjectStatusInput"
+      responses:
+        "200":
+          description: Project updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          description: Not found
 
   /projects/track/{token}:
     get:
@@ -163,6 +188,19 @@ paths:
           description: Validation error
 
   /contacts:
+    get:
+      operationId: listContacts
+      tags: [contacts]
+      summary: List all contact messages (admin)
+      responses:
+        "200":
+          description: List of contact messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Contact"
     post:
       operationId: createContact
       tags: [contacts]
@@ -246,6 +284,15 @@ components:
           type: ["string", "null"]
         createdAt:
           type: string
+
+    UpdateProjectStatusInput:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [new, contacted, in_progress, closed]
 
     ProjectInput:
       type: object
