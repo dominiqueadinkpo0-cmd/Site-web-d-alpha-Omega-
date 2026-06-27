@@ -310,16 +310,16 @@ export default function Home() {
         <section id="portfolio" className="py-24 bg-[#FAFAFA]">
           <div className="container mx-auto px-6 max-w-7xl">
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <h2 className="text-4xl font-heading font-bold mb-4">Portfolio Conceptuel</h2>
-              <p className="text-lg text-muted-foreground">Aperçu de nos capacités techniques et créatives à travers des cas d'usage typiques.</p>
+              <h2 className="text-4xl font-heading font-bold mb-4">Nos Réalisations</h2>
+              <p className="text-lg text-muted-foreground">Des projets concrets livrés pour des clients réels en Afrique de l'Ouest et à l'international.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {[
-                { title: "SaaS RH & Recrutement", tags: ["React", "Node.js", "PostgreSQL"], desc: "Plateforme complète de gestion des candidatures avec workflows automatisés." },
-                { title: "CRM Intelligent", tags: ["Next.js", "Supabase", "Tailwind"], desc: "Outil de relation client avec tableaux de bord analytiques en temps réel." },
-                { title: "Application Fintech", tags: ["Flutter", "Firebase", "Stripe"], desc: "App mobile sécurisée de gestion financière et paiements." },
-                { title: "E-commerce Premium", tags: ["Next.js", "Stripe", "Framer"], desc: "Boutique en ligne haute performance à l'esthétique luxueuse." },
+                { title: "AURA-SYNC", tags: ["FastAPI", "Whisper", "React"], desc: "Plateforme de doublage cinématographique automatisé pour le cinéma africain. 50 langues, voix IA déterministe, déploiement studio." },
+                { title: "Alpha ERP", tags: ["React", "PostgreSQL", "Docker"], desc: "Système de gestion d'entreprise multi-tenant. Comptabilité, RH, stocks et facturation en une seule plateforme." },
+                { title: "Lyte Food", tags: ["React", "Express", "PostgreSQL"], desc: "Application de commande de repas en ligne avec gestion des livraisons, tableau de bord restaurateur et paiement intégré." },
+                { title: "E-commerce Afrique de l'Ouest", tags: ["React", "FedaPay", "PWA"], desc: "Boutique e-commerce optimisée pour les marchés CEDEAO. Mobile Money, programme fidélité et assistant IA intégré." },
               ].map(project => (
                 <div key={project.title} className="bg-white rounded-3xl border border-border overflow-hidden hover:shadow-lg transition-shadow group">
                   <div className="h-48 bg-gray-100 flex items-center justify-center border-b border-border relative overflow-hidden">
