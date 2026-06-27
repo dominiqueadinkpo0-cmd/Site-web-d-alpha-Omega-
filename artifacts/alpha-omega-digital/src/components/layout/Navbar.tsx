@@ -34,13 +34,11 @@ export function Navbar() {
       }`}
     >
       <div className="container mx-auto px-6 max-w-7xl flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group">
-          <span className="text-2xl font-heading font-bold text-primary group-hover:text-primary/80 transition-colors">
-            α
-          </span>
-          <span className="text-xl font-heading font-semibold text-foreground tracking-tight">
-            Alpha Oméga Digital
-          </span>
+        <Link href="/" className="flex flex-col items-center leading-tight group">
+          <svg width="180" height="36" viewBox="0 0 180 36" xmlns="http://www.w3.org/2000/svg" className="group-hover:opacity-80 transition-opacity">
+            <text x="0" y="20" fontFamily="Montserrat, sans-serif" fontWeight="300" fontSize="16" letterSpacing="8" fill="currentColor" textAnchor="start">ALPHA OMÉGA</text>
+            <text x="28" y="34" fontFamily="Montserrat, sans-serif" fontWeight="300" fontSize="9" letterSpacing="12" fill="currentColor" textAnchor="start">DIGITAL</text>
+          </svg>
         </Link>
 
         {/* Desktop Nav */}
