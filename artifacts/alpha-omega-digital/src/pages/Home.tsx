@@ -383,19 +383,24 @@ export default function Home() {
               </div>
 
               <div>
-                <h2 className="text-3xl font-heading font-bold mb-8">Maintenance & Garanties</h2>
-                <div className="space-y-6 text-muted-foreground">
-                  <p>
-                    La livraison d'un projet n'est que le début. Alpha Oméga Digital s'engage à assurer la pérennité de vos outils via un support rigoureux :
-                  </p>
-                  <ul className="space-y-3">
-                    <li className="flex items-center gap-3"><CheckCircle2 className="w-5 h-5 text-primary" /> Maintenance corrective et évolutive</li>
-                    <li className="flex items-center gap-3"><CheckCircle2 className="w-5 h-5 text-primary" /> Monitoring des performances 24/7</li>
-                    <li className="flex items-center gap-3"><CheckCircle2 className="w-5 h-5 text-primary" /> Sauvegardes automatisées régulières</li>
-                    <li className="flex items-center gap-3"><CheckCircle2 className="w-5 h-5 text-primary" /> Support technique réactif</li>
-                    <li className="flex items-center gap-3"><CheckCircle2 className="w-5 h-5 text-primary" /> Code propre et documentation complète</li>
-                    <li className="flex items-center gap-3"><CheckCircle2 className="w-5 h-5 text-primary" /> Respect strict des délais de livraison</li>
-                  </ul>
+                <h2 className="text-3xl font-heading font-bold mb-8">Nos Engagements</h2>
+                <div className="space-y-4">
+                  {[
+                    { titre: "Réponse sous 24h", detail: "Toute demande reçoit une réponse le jour ouvrable suivant — sans exception." },
+                    { titre: "1 mois de support inclus", detail: "Après chaque livraison, un mois de corrections et d'ajustements offert sans surcoût." },
+                    { titre: "Code source livré", detail: "Vous êtes propriétaire de votre code. Documentation complète fournie à la livraison." },
+                    { titre: "Délais respectés", detail: "Un planning établi dès le départ. Tout retard de notre part est compensé." },
+                    { titre: "Transparence totale", detail: "Accès en temps réel à l'avancement du projet. Aucune surprise en fin de mission." },
+                    { titre: "Satisfaction garantie", detail: "Si le livrable ne correspond pas au cahier des charges validé, on le corrige — point." },
+                  ].map(item => (
+                    <div key={item.titre} className="flex items-start gap-4 p-4 bg-[#FAFAFA] rounded-xl border border-border">
+                      <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                      <div>
+                        <p className="font-semibold text-foreground">{item.titre}</p>
+                        <p className="text-sm text-muted-foreground mt-0.5">{item.detail}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
