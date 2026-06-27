@@ -244,12 +244,12 @@ export default function Home() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[
-                { title: "Approche stratégique", icon: Target },
-                { title: "Solutions sur mesure", icon: Code },
-                { title: "Performance", icon: Zap },
-                { title: "Sécurité", icon: Lock },
-                { title: "Accompagnement humain", icon: Users },
-                { title: "Vision long terme", icon: Eye }
+                { title: "Approche stratégique", icon: Target, desc: "Chaque projet commence par une analyse de vos objectifs business, votre marché et vos concurrents — avant d'écrire une seule ligne de code." },
+                { title: "Solutions sur mesure", icon: Code, desc: "Rien de générique. Chaque fonctionnalité est conçue spécifiquement pour vos besoins, votre audience et vos contraintes." },
+                { title: "Performance garantie", icon: Zap, desc: "LCP < 2.5s, code optimisé, images compressées. Vos utilisateurs ne patientent pas — ils convertissent." },
+                { title: "Sécurité intégrée", icon: Lock, desc: "Authentification robuste, données chiffrées, conformité RGPD. La sécurité n'est pas une option, c'est une fondation." },
+                { title: "Accompagnement humain", icon: Users, desc: "Un interlocuteur unique, disponible en moins de 24h. Pas de tickets perdus — une relation directe." },
+                { title: "Vision long terme", icon: Eye, desc: "Architecture évolutive pensée pour grandir avec vous. Ce que nous livrons aujourd'hui sera encore solide dans 5 ans." }
               ].map(item => (
                 <div key={item.title} className="flex items-start gap-4 p-6 rounded-2xl bg-[#FAFAFA] border border-border">
                   <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm text-primary shrink-0">
@@ -257,7 +257,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-lg font-heading font-semibold mb-2">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">Une exigence de qualité appliquée à chaque dimension de notre collaboration.</p>
+                    <p className="text-sm text-muted-foreground">{item.desc}</p>
                   </div>
                 </div>
               ))}
